@@ -1,6 +1,5 @@
 # QuadClick
-A new way of mouseless navigation on websites 
-Add as a new Tampermonkey script
+A new way of mouseless navigation on websites using quadtrees
 
 <img width="1900" height="935" alt="image" src="https://github.com/user-attachments/assets/755b747a-fd58-43b7-ab83-55b84d784fef" />
 

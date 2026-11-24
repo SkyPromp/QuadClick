@@ -1,33 +1,13 @@
-// ==UserScript==
-// @name         QuadClick
-// @version      2026-11-23
-// @description  Use quad trees to click on elements
-// @author       SkyPromp
-// @match        *://*/*
-// @run-at       document-idle
-// @grant        GM_addStyle
-// ==/UserScript==
-
-GM_addStyle(`
-.line {
-  position: absolute;
-  background-color: #ff0000;
-  z-index: 2147483647;
-  pointer-events: none;
-}
-`);
-
-
 function addCross(size, x_offset, y_offset){
     let ver = document.createElement(`div`); // |
-    ver.className = "line";
+    ver.className = "quadclickline";
     ver.style.width = "1px";
     ver.style.height = `${Math.pow(1/2, size - 1) * 100}%`;
     ver.style.top = `${x_offset - Math.pow(1/2, size - 1) * 100 / 2}%`;
     ver.style.left = `${y_offset}%`;
 
     let hor = document.createElement(`div`); // -
-    hor.className = "line"
+    hor.className = "quadclickline"
     hor.style.width = `${Math.pow(1/2, size - 1) * 100}%`;
     hor.style.height = "1px";
     hor.style.left = `${y_offset - Math.pow(1/2, size - 1) * 100 / 2}%`;
@@ -41,7 +21,7 @@ function addCross(size, x_offset, y_offset){
 
 function drawDebugDot(x, y){
     let dot = document.createElement(`div`);
-    dot.className = "line"
+    dot.className = "quadclickline"
     dot.style.width = `5px`;
     dot.style.height = "5px";
     dot.style.left = `${(x - 2)}px`;
@@ -60,6 +40,17 @@ function drawDebugDot(x, y){
     let y_offset = 50;
     let actions_stack = [];
     let elements_stack = [];
+
+    const style = document.createElement('style');
+
+    style.textContent = `.quadclickline {
+      position: absolute;
+      background-color: #ff0000;
+      z-index: 2147483647;
+      pointer-events: none;
+    }`;
+
+    document.documentElement.appendChild(style);
 
     document.addEventListener('keydown', (event) => {
         let delta = Math.pow(1/2, size + 1) * 100;
