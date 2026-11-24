@@ -20,6 +20,8 @@ or
 - ArrowDown -> bottom left
 - ArrowUp -> bottom right
 
+- u -> undo last navigation
+
 - c -> click on the element the latest crosshair is placed on
 
 - Ctrl-C -> cancel
