@@ -67,25 +67,25 @@ function drawDebugDot(x, y){
 
         if (event.ctrlKey && event.key.toLowerCase() === 'm' && !is_enabled) { // Start
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && event.key.toLowerCase() === 'l') { // Top right
+        } else if (is_enabled && (event.key.toLowerCase() === 'l' || event.key === 'ArrowRight')) { // Top right
             size += 1;
             x_offset -= delta;
             y_offset += delta;
             actions_stack.push([-delta, delta]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && event.key.toLowerCase() === 'k') { // Bottom right
+        } else if (is_enabled && (event.key.toLowerCase() === 'k' || event.key === 'ArrowUp')) { // Bottom right
             size += 1;
             x_offset += delta;
             y_offset += delta;
             actions_stack.push([delta, delta]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && event.key.toLowerCase() === 'h') { // Top left
+        } else if (is_enabled && (event.key.toLowerCase() === 'h' || event.key === 'ArrowLeft')) { // Top left
             size += 1;
             x_offset -= delta;
             y_offset -= delta;
             actions_stack.push([-delta, -delta]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && event.key.toLowerCase() === 'j') { // Bottom left
+        } else if (is_enabled && (event.key.toLowerCase() === 'j' || event.key === 'ArrowDown')) { // Bottom left
             size += 1;
             x_offset += delta;
             y_offset -= delta;
@@ -133,5 +133,5 @@ function drawDebugDot(x, y){
 
             elements_stack = [];
         }
-    });
+    }, true);
 })();

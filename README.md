@@ -14,6 +14,11 @@ Navigate with quad trees using
 - l -> top right
 - j -> bottom left
 - k -> bottom right
+or 
+- ArrowLeft -> top left
+- ArrowRight -> top right
+- ArrowDown -> bottom left
+- ArrowUp -> bottom right
 
 - c -> click on the element the latest crosshair is placed on
 
