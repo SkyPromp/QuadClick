@@ -119,6 +119,7 @@ function drawDebugDot(x, y){
             let y = x_offset * screen_height / 100;
             let central_element = document.elementFromPoint(x, y);
 
+            central_element.focus();
             central_element.click();
 
             size = 1;
