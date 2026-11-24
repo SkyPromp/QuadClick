@@ -1,3 +1,26 @@
-body {
-	color: black;
+label, input[type="text"], input[type="color"] {
+    display: inline-block;
+}
+
+h2, h3 {
+	margin-top: 0.5ch;
+	margin-bottom: 0.5ch;
+}
+
+input[type="text"] {
+    width: 1ch;
+}
+
+input[type="color"] {
+    width: 2ch;
+    padding: 0px;
+}
+
+label {
+    margin-right: auto;
+}
+
+.aligned_input {
+    display: flex;
+    align-items: center;
 }
