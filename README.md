@@ -1,6 +1,10 @@
 # QuadClick
-A new way of mouseless navigation on websites
+A new way of mouseless navigation on websites 
+Add as a new Tampermonkey script
 
+<img width="1900" height="935" alt="image" src="https://github.com/user-attachments/assets/755b747a-fd58-43b7-ab83-55b84d784fef" />
+
+## How to use
 - start by pressing Ctrl-M
 
 Once started:
