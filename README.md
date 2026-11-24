@@ -25,3 +25,9 @@ or
 
 - Ctrl-C -> cancel
 
+## Future plans
+- Improve css for the popup
+- Add custom keybindings for starting/cancelling
+- Clean up codebase for ease of development
+- Add keybindings for page scrolling
+- Different split types than only 2x2?
