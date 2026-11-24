@@ -5,12 +5,12 @@ const directions = {
     j: [1, -1], arrowdown: [1, -1]
 };
 
-function addCross(size, x_offset, y_offset){
+function addCross(size, x_offset, y_offset, line_thickness=1){
     const offset = Math.pow(1/2, size - 1) * 100;
 
     let ver = document.createElement(`div`); // |
     ver.className = "quadclickline";
-    ver.style.width = "1px";
+    // ver.style.width = `${line_thickness}px`;
     ver.style.height = `${offset}%`;
     ver.style.top = `${x_offset - offset / 2}%`;
     ver.style.left = `${y_offset}%`;
@@ -18,7 +18,7 @@ function addCross(size, x_offset, y_offset){
     let hor = document.createElement(`div`); // -
     hor.className = "quadclickline"
     hor.style.width = `${offset}%`;
-    hor.style.height = "1px";
+    // hor.style.height = `${line_thickness}px`;
     hor.style.top = `${x_offset}%`;
     hor.style.left = `${y_offset - offset / 2}%`;
 
@@ -48,6 +48,43 @@ function drawDebugDot(x, y){
     let x_offset, y_offset;
     let actions_stack = [];
     let elements_stack = [];
+    const default_settings = { 
+        line_thickness: 1,
+        line_colour: "#ff0000"
+    };
+    let settings = {...default_settings};
+    const style = document.createElement('style');
+
+    function updateQuadclicklineCSS(){
+        style.textContent = `.quadclickline {
+            position: fixed;
+            background-color: ${settings.line_colour ?? default_settings.line_colour};
+            z-index: 2147483647;
+            pointer-events: none;
+            width: ${settings.line_thickness ?? default_settings.line_thickness}px;
+            height: ${settings.line_thickness ?? default_settings.line_thickness}px;
+        }`;
+    }
+
+    updateQuadclicklineCSS();
+
+    chrome.storage.sync.get(["line_thickness", "line_colour", "top_left"], v => {
+        updateQuadclicklineCSS();
+    });
+
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area !== "sync") return;
+        let has_changed = false;
+
+        for (const [key, change] of Object.entries(changes)){
+            if (key in settings) {
+                settings[key] = change.newValue;
+                has_changed = true;
+            }
+        }
+
+        if (has_changed) updateQuadclicklineCSS();
+    });
 
     function reset(){
         size = 1;
@@ -61,15 +98,6 @@ function drawDebugDot(x, y){
     }
 
     reset();
-
-    const style = document.createElement('style');
-
-    style.textContent = `.quadclickline {
-      position: fixed;
-      background-color: #ff0000;
-      z-index: 2147483647;
-      pointer-events: none;
-    }`;
 
     document.documentElement.appendChild(style);
 

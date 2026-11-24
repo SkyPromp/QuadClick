@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QuadClick Settings</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Settings</h2>
+
+	<!-- line thickness slider -->
+	<label for="line_thickness">Line thickness</label>
+	<input type="range" id="line_thickness" min="1" max="20" value="1">
+
+	<!-- line colour -->
+	<label for="line_colour_picker">Line colour picker</label>
+	<input type="color" id="line_colour_picker" value="#ff0000">
+
+	<!-- keybindings -->
+	<label for="top_left">Top left</label>
+	<input type="text" id="top_left" maxlength="1" value="h">
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
