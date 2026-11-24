@@ -65,7 +65,7 @@ function drawDebugDot(x, y){
     const style = document.createElement('style');
 
     style.textContent = `.quadclickline {
-      position: absolute;
+      position: fixed;
       background-color: #ff0000;
       z-index: 2147483647;
       pointer-events: none;
