@@ -1,5 +1,8 @@
 const line_thickness = document.getElementById("line_thickness");
-chrome.storage.sync.get(["line_thickness"], (v => line_thickness.value = v.line_thickness ?? "1"));
+chrome.storage.sync.get(["line_thickness"], (v => {
+    line_thickness.value = v.line_thickness ?? "1";
+    document.getElementById("label_line_thickness").innerText = `Thickness (${v.line_thickness ?? "1"})`;
+}));
 
 line_thickness.addEventListener('change', (event) => {
     chrome.storage.sync.set({line_thickness: event.target.value});
