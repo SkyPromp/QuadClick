@@ -1,20 +1,29 @@
+const directions = {
+    l: [-1, 1], arrowright: [-1, 1],
+    k: [1, 1], arrowup: [1, 1],
+    h: [-1, -1], arrowleft: [-1, -1],
+    j: [1, -1], arrowdown: [1, -1]
+};
+
 function addCross(size, x_offset, y_offset){
+    const offset = Math.pow(1/2, size - 1) * 100;
+
     let ver = document.createElement(`div`); // |
     ver.className = "quadclickline";
     ver.style.width = "1px";
-    ver.style.height = `${Math.pow(1/2, size - 1) * 100}%`;
-    ver.style.top = `${x_offset - Math.pow(1/2, size - 1) * 100 / 2}%`;
+    ver.style.height = `${offset}%`;
+    ver.style.top = `${x_offset - offset / 2}%`;
     ver.style.left = `${y_offset}%`;
 
     let hor = document.createElement(`div`); // -
     hor.className = "quadclickline"
-    hor.style.width = `${Math.pow(1/2, size - 1) * 100}%`;
+    hor.style.width = `${offset}%`;
     hor.style.height = "1px";
-    hor.style.left = `${y_offset - Math.pow(1/2, size - 1) * 100 / 2}%`;
     hor.style.top = `${x_offset}%`;
+    hor.style.left = `${y_offset - offset / 2}%`;
 
-    document.documentElement.appendChild(hor);
     document.documentElement.appendChild(ver);
+    document.documentElement.appendChild(hor);
 
     return [hor, ver];
 }
@@ -35,11 +44,23 @@ function drawDebugDot(x, y){
     'use strict';
     const screen_width = window.innerWidth;
     const screen_height = window.innerHeight;
-    let size = 1;
-    let x_offset = 50;
-    let y_offset = 50;
+    let size;
+    let x_offset, y_offset;
     let actions_stack = [];
     let elements_stack = [];
+
+    function reset(){
+        size = 1;
+        x_offset = 50;
+        y_offset = 50;
+        actions_stack = [];
+
+        elements_stack.forEach(els => els.forEach(el => el.remove()));
+
+        elements_stack = [];
+    }
+
+    reset();
 
     const style = document.createElement('style');
 
@@ -53,34 +74,18 @@ function drawDebugDot(x, y){
     document.documentElement.appendChild(style);
 
     document.addEventListener('keydown', (event) => {
-        let delta = Math.pow(1/2, size + 1) * 100;
-        let is_enabled = elements_stack.length > 0;
+        const delta = Math.pow(1/2, size + 1) * 100;
+        const is_enabled = elements_stack.length > 0;
+        const direction_scalars = directions[event.key.toLowerCase()];
 
         if (event.ctrlKey && event.key.toLowerCase() === 'm' && !is_enabled) { // Start
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && (event.key.toLowerCase() === 'l' || event.key === 'ArrowRight')) { // Top right
+        } else if (is_enabled && direction_scalars) {
+            const [dx, dy] = direction_scalars.map(d => d * delta);
             size += 1;
-            x_offset -= delta;
-            y_offset += delta;
-            actions_stack.push([-delta, delta]);
-            elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && (event.key.toLowerCase() === 'k' || event.key === 'ArrowUp')) { // Bottom right
-            size += 1;
-            x_offset += delta;
-            y_offset += delta;
-            actions_stack.push([delta, delta]);
-            elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && (event.key.toLowerCase() === 'h' || event.key === 'ArrowLeft')) { // Top left
-            size += 1;
-            x_offset -= delta;
-            y_offset -= delta;
-            actions_stack.push([-delta, -delta]);
-            elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && (event.key.toLowerCase() === 'j' || event.key === 'ArrowDown')) { // Bottom left
-            size += 1;
-            x_offset += delta;
-            y_offset -= delta;
-            actions_stack.push([delta, -delta]);
+            x_offset += dx;
+            y_offset += dy;
+            actions_stack.push([dx, dy]);
             elements_stack.push(addCross(size, x_offset, y_offset));
         } else if (is_enabled && event.key.toLowerCase() === 'u') { // Go 1 layer back
             let dx, dy, lx, ly;
@@ -94,36 +99,17 @@ function drawDebugDot(x, y){
             lx.remove();
             ly.remove();
         } else if (is_enabled && event.ctrlKey && event.key.toLowerCase() === 'c') {
-            size = 1;
-            x_offset = 50;
-            y_offset = 50;
-            actions_stack = [];
+            reset();
 
-            elements_stack.forEach(el => {
-                el[0].remove();
-                el[1].remove();
-            });
-
-            elements_stack = [];
         } else if (is_enabled && event.key.toLowerCase() === 'c') { // Click left mouse
             let x = y_offset * screen_width / 100;
             let y = x_offset * screen_height / 100;
             let central_element = document.elementFromPoint(x, y);
 
-            central_element.focus();
-            central_element.click();
+            central_element?.focus();
+            central_element?.click();
 
-            size = 1;
-            x_offset = 50;
-            y_offset = 50;
-            actions_stack = [];
-
-            elements_stack.forEach(el => {
-                el[0].remove();
-                el[1].remove();
-            });
-
-            elements_stack = [];
+            reset();
         }
     }, true);
 })();
