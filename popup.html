@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>QuadClick Settings</title>
-    <link rel="stylesheet" href="popup.css">
-</head>
-<body>
-    <div class="container">
-        <h2>Settings</h2>
+	<head>
+	    <title>QuadClick Settings</title>
+	    <link rel="stylesheet" href="popup.css">
+	</head>
+	<body>
+		<h2>Settings</h2>
 
-	<!-- line thickness slider -->
-	<label for="line_thickness">Line thickness</label>
-	<input type="range" id="line_thickness" min="1" max="20" value="1">
+		<!-- line thickness slider -->
+		<label for="line_thickness">Line thickness</label>
+		<input type="range" id="line_thickness" min="1" max="20" value="1">
 
-	<!-- line colour -->
-	<label for="line_colour_picker">Line colour picker</label>
-	<input type="color" id="line_colour_picker" value="#ff0000">
+		<!-- line colour -->
+		<label for="line_colour_picker">Line colour picker</label>
+		<input type="color" id="line_colour_picker" value="#ff0000">
 
-	<!-- keybindings -->
-	<label for="top_left">Top left</label>
-	<input type="text" id="top_left" maxlength="1" value="h">
-    </div>
+		<!-- keybindings -->
+		<label for="top_left">Top left</label>
+		<input type="text" id="top_left" maxlength="1" value="h">
 
-    <script src="popup.js"></script>
-</body>
+		<label for="top_right">Top right</label>
+		<input type="text" id="top_right" maxlength="1" value="l">
+
+		<label for="bottom_left">Bottom left</label>
+		<input type="text" id="bottom_left" maxlength="1" value="j">
+
+		<label for="bottom_right">Bottom right</label>
+		<input type="text" id="bottom_right" maxlength="1" value="k">
+
+		<label for="undo">Undo</label>
+		<input type="text" id="undo" maxlength="1" value="u">
+
+		<label for="left_click">Left click</label>
+		<input type="text" id="left_click" maxlength="1" value="c">
+
+		<script src="popup.js"></script>
+	</body>
 </html>

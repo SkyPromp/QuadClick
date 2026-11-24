@@ -1,16 +1,8 @@
-const directions = {
-    l: [-1, 1], arrowright: [-1, 1],
-    k: [1, 1], arrowup: [1, 1],
-    h: [-1, -1], arrowleft: [-1, -1],
-    j: [1, -1], arrowdown: [1, -1]
-};
-
-function addCross(size, x_offset, y_offset, line_thickness=1){
+function addCross(size, x_offset, y_offset){
     const offset = Math.pow(1/2, size - 1) * 100;
 
     let ver = document.createElement(`div`); // |
     ver.className = "quadclickline";
-    // ver.style.width = `${line_thickness}px`;
     ver.style.height = `${offset}%`;
     ver.style.top = `${x_offset - offset / 2}%`;
     ver.style.left = `${y_offset}%`;
@@ -18,7 +10,6 @@ function addCross(size, x_offset, y_offset, line_thickness=1){
     let hor = document.createElement(`div`); // -
     hor.className = "quadclickline"
     hor.style.width = `${offset}%`;
-    // hor.style.height = `${line_thickness}px`;
     hor.style.top = `${x_offset}%`;
     hor.style.left = `${y_offset - offset / 2}%`;
 
@@ -50,12 +41,27 @@ function drawDebugDot(x, y){
     let elements_stack = [];
     const default_settings = { 
         line_thickness: 1,
-        line_colour: "#ff0000"
+        line_colour: "#ff0000",
+        top_left: "h",
+        top_right: "l",
+        bottom_left: "j",
+        bottom_right: "k",
+        undo: "u",
+        left_click: "c"
     };
+
     let settings = {...default_settings};
+
+    let directions = {
+        [settings.top_right]: [-1, 1], arrowright: [-1, 1],
+        [settings.bottom_right]: [1, 1], arrowup: [1, 1],
+        [settings.top_left]: [-1, -1], arrowleft: [-1, -1],
+        [settings.bottom_left]: [1, -1], arrowdown: [1, -1]
+    }
+
     const style = document.createElement('style');
 
-    function updateQuadclicklineCSS(){
+    function updateSettings(){
         style.textContent = `.quadclickline {
             position: fixed;
             background-color: ${settings.line_colour ?? default_settings.line_colour};
@@ -64,12 +70,20 @@ function drawDebugDot(x, y){
             width: ${settings.line_thickness ?? default_settings.line_thickness}px;
             height: ${settings.line_thickness ?? default_settings.line_thickness}px;
         }`;
+
+        directions = {
+            [settings.top_right]: [-1, 1], arrowright: [-1, 1],
+            [settings.bottom_right]: [1, 1], arrowup: [1, 1],
+            [settings.top_left]: [-1, -1], arrowleft: [-1, -1],
+            [settings.bottom_left]: [1, -1], arrowdown: [1, -1]
+        };
     }
 
-    updateQuadclicklineCSS();
+    updateSettings();
 
-    chrome.storage.sync.get(["line_thickness", "line_colour", "top_left"], v => {
-        updateQuadclicklineCSS();
+    chrome.storage.sync.get(default_settings, v => {
+        Object.assign(settings, v);
+        updateSettings();
     });
 
     chrome.storage.onChanged.addListener((changes, area) => {
@@ -83,7 +97,7 @@ function drawDebugDot(x, y){
             }
         }
 
-        if (has_changed) updateQuadclicklineCSS();
+        if (has_changed) updateSettings();
     });
 
     function reset(){
@@ -115,7 +129,7 @@ function drawDebugDot(x, y){
             y_offset += dy;
             actions_stack.push([dx, dy]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && event.key.toLowerCase() === 'u') { // Go 1 layer back
+        } else if (is_enabled && event.key.toLowerCase() === settings.undo && actions_stack.length > 0) { // Go 1 layer back
             let dx, dy, lx, ly;
 
             [dx, dy] = actions_stack.pop();
@@ -129,7 +143,7 @@ function drawDebugDot(x, y){
         } else if (is_enabled && event.ctrlKey && event.key.toLowerCase() === 'c') {
             reset();
 
-        } else if (is_enabled && event.key.toLowerCase() === 'c') { // Click left mouse
+        } else if (is_enabled && event.key.toLowerCase() === settings.left_click) { // Click left mouse
             let x = y_offset * screen_width / 100;
             let y = x_offset * screen_height / 100;
             let central_element = document.elementFromPoint(x, y);
