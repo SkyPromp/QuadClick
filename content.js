@@ -120,6 +120,8 @@ function drawDebugDot(x, y){
         const is_enabled = elements_stack.length > 0;
         const direction_scalars = directions[event.key.toLowerCase()];
 
+        if (is_enabled) event.preventDefault();
+
         if (event.ctrlKey && event.key.toLowerCase() === 'm' && !is_enabled) { // Start
             elements_stack.push(addCross(size, x_offset, y_offset));
         } else if (is_enabled && direction_scalars) {
