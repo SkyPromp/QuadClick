@@ -2,13 +2,13 @@ function addCross(size, x_offset, y_offset){
     const offset = Math.pow(1/2, size - 1) * 100;
 
     let ver = document.createElement(`div`); // |
-    ver.className = "quadclickline";
+    ver.className = 'quadclickline';
     ver.style.height = `${offset}%`;
     ver.style.top = `${x_offset - offset / 2}%`;
     ver.style.left = `${y_offset}%`;
 
     let hor = document.createElement(`div`); // -
-    hor.className = "quadclickline"
+    hor.className = 'quadclickline'
     hor.style.width = `${offset}%`;
     hor.style.top = `${x_offset}%`;
     hor.style.left = `${y_offset - offset / 2}%`;
@@ -21,12 +21,12 @@ function addCross(size, x_offset, y_offset){
 
 function drawDebugDot(x, y){
     let dot = document.createElement(`div`);
-    dot.className = "quadclickline"
+    dot.className = 'quadclickline'
     dot.style.width = `5px`;
-    dot.style.height = "5px";
+    dot.style.height = '5px';
     dot.style.left = `${(x - 2)}px`;
     dot.style.top = `${(y - 2)}px`;
-    dot.style.backgroundColor = "green";
+    dot.style.backgroundColor = 'green';
 
     document.documentElement.appendChild(dot);
 }
@@ -39,19 +39,21 @@ function drawDebugDot(x, y){
     let x_offset, y_offset;
     let actions_stack = [];
     let elements_stack = [];
-    const default_settings = { 
+    const default_settings = { // ! = ctrl, + = alt, !+ ctrl+alt, always ctrl+alt, never alt+ctrl
         line_thickness: 1,
-        line_colour: "#ff0000",
-        top_left: "h",
-        top_right: "l",
-        bottom_left: "j",
-        bottom_right: "k",
-        undo: "u",
-        left_click: "c",
-        page_down: "j", // + ctrl
-        page_up: "k",  // + ctrl
-        scroll_down: "j",  // + alt
-        scroll_up: "k", // + alt
+        line_colour: '#ff0000',
+        top_left: 'h',
+        top_right: 'l',
+        bottom_left: 'j',
+        bottom_right: 'k',
+        undo: 'u',
+        left_click: 'c',
+        page_down: '!j',
+        page_up: '!k',
+        scroll_down: '+j',
+        scroll_up: '+k',
+        activate_mode: '!m',
+        deactivate_mode: '!c'
     };
 
     let settings = {...default_settings};
@@ -91,7 +93,7 @@ function drawDebugDot(x, y){
     });
 
     chrome.storage.onChanged.addListener((changes, area) => {
-        if (area !== "sync") return;
+        if (area !== 'sync') return;
         let has_changed = false;
 
         for (const [key, change] of Object.entries(changes)){
@@ -122,33 +124,29 @@ function drawDebugDot(x, y){
     document.addEventListener('keydown', (event) => {
         if (!event.key || /^F\d+$/.test(event.key)) return;
 
-        const alt = event.altKey ?? false;
-        const ctrl = event.ctrlKey ?? false;
-        const normal = !(alt || ctrl);
-        const key = event.key.toLowerCase();
+        const input = `${event.ctrlKey ? '!': ''}${event.altKey ? '+' : ''}${event.key.toLowerCase()}`
 
         const delta = Math.pow(1/2, size + 1) * 100;
         const is_enabled = elements_stack.length > 0;
-        const direction_scalars = directions[key];
+        const direction_scalars = directions[input];
 
         if (!is_enabled) {
-            if (ctrl && key === 'm') elements_stack.push(addCross(size, x_offset, y_offset)); // Start
+            if (input === settings.activate_mode) elements_stack.push(addCross(size, x_offset, y_offset)); // Start
             return;  // Stop function if not enabled
         }
 
         // Everything from here happens only if it's enabled
 
         event.preventDefault();  // Only if enabled
-        console.log("QUAD", event);
 
-        if (normal && direction_scalars) {
+        if (direction_scalars) {
             const [dx, dy] = direction_scalars.map(d => d * delta);
             size += 1;
             x_offset += dx;
             y_offset += dy;
             actions_stack.push([dx, dy]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (normal && key === settings.undo && actions_stack.length > 0) { // Go 1 layer back
+        } else if (input === settings.undo && actions_stack.length > 0) { // Go 1 layer back
             let dx, dy, lx, ly;
 
             [dx, dy] = actions_stack.pop();
@@ -159,9 +157,9 @@ function drawDebugDot(x, y){
             size -= 1;
             lx.remove();
             ly.remove();
-        } else if (ctrl && key === 'c') {
+        } else if (input === settings.deactivate_mode) {
             reset();
-        } else if (normal && key === settings.left_click) { // Click left mouse
+        } else if (input === settings.left_click) { // Click left mouse
             let x = y_offset * screen_width / 100;
             let y = x_offset * screen_height / 100;
             let central_element = document.elementFromPoint(x, y);
@@ -170,22 +168,22 @@ function drawDebugDot(x, y){
             central_element?.click();
 
             reset();
-        } else if (ctrl && key === settings.page_down) {
+        } else if (input === settings.page_down) {
             window.scrollBy({
                 top: screen_height,
                 behavior: 'instant'
             });
-        } else if (ctrl && key === settings.page_up) {
+        } else if (input === settings.page_up) {
             window.scrollBy({
                 top: -screen_height,
                 behavior: 'instant'
             });
-        } else if ((alt && key === settings.scroll_down) || key === 'arrowdown') {
+        } else if (input === settings.scroll_down) {
             window.scrollBy({
                 top: 20,
                 behavior: 'instant'
             });
-        } else if ((alt && key === settings.scroll_up) || key === 'arrowup') {
+        } else if (input === settings.scroll_up) {
             window.scrollBy({
                 top: -20,
                 behavior: 'instant'

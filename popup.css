@@ -8,7 +8,7 @@ h2, h3 {
 }
 
 input[type="text"] {
-    width: 1ch;
+    width: 2ch;
 }
 
 input[type="color"] {
