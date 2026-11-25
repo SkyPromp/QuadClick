@@ -182,12 +182,12 @@ function drawDebugDot(x, y){
             });
         } else if ((alt && key === settings.scroll_down) || key === 'arrowdown') {
             window.scrollBy({
-                top: 100,
+                top: 20,
                 behavior: 'instant'
             });
         } else if ((alt && key === settings.scroll_up) || key === 'arrowup') {
             window.scrollBy({
-                top: -100,
+                top: -20,
                 behavior: 'instant'
             });
         }
