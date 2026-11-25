@@ -2,7 +2,11 @@
 A new way of mouseless navigation on websites using quadtrees
 
 <img width="1900" height="935" alt="image" src="https://github.com/user-attachments/assets/755b747a-fd58-43b7-ab83-55b84d784fef" />
-[![Watch the demo](https://img.youtube.com/vi/zjbKXGUif_o/maxresdefault.jpg)](https://www.youtube.com/watch?v=zjbKXGUif_o)
+
+## Demo
+[![Watch the demo](https://img.youtube.com/vi/zjbKXGUif_o/0.jpg)](https://www.youtube.com/watch?v=zjbKXGUif_o)
+
+**▶ Click above to watch the demo on YouTube**
 
 ## How to use
 All keybindings are configurable, but the default keybindings are:
