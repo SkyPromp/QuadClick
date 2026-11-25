@@ -38,3 +38,4 @@ Click on the icon to change the keybindings, line width and line colour
 - Reset keybindings
 - Settings for scroll speed
 - Smooth scrolling?
+- Prevent duplicate keybindings

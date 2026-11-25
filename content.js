@@ -59,10 +59,10 @@ function drawDebugDot(x, y){
     let settings = {...default_settings};
 
     let directions = {
-        [settings.top_right]: [-1, 1], arrowright: [-1, 1],
-        [settings.bottom_right]: [1, 1], arrowup: [1, 1],
-        [settings.top_left]: [-1, -1], arrowleft: [-1, -1],
-        [settings.bottom_left]: [1, -1], arrowdown: [1, -1]
+        [settings.top_right]: [-1, 1],
+        [settings.bottom_right]: [1, 1],
+        [settings.top_left]: [-1, -1],
+        [settings.bottom_left]: [1, -1],
     }
 
     const style = document.createElement('style');
@@ -132,12 +132,14 @@ function drawDebugDot(x, y){
 
         if (!is_enabled) {
             if (input === settings.activate_mode) elements_stack.push(addCross(size, x_offset, y_offset)); // Start
+            else return; // So the prevent default doesn't get triggered if nothing hits
+
+            event.preventDefault(); // Only if enabled and something gets triggered
+
             return;  // Stop function if not enabled
         }
 
         // Everything from here happens only if it's enabled
-
-        event.preventDefault();  // Only if enabled
 
         if (direction_scalars) {
             const [dx, dy] = direction_scalars.map(d => d * delta);
@@ -188,6 +190,11 @@ function drawDebugDot(x, y){
                 top: -20,
                 behavior: 'instant'
             });
+        } else {
+            return; // So the prevent default doesn't get triggered if nothing hits
         }
+
+        event.preventDefault(); // Only if enabled and something gets triggered
+
     }, true);
 })();
