@@ -31,3 +31,4 @@ or
 - Clean up codebase for ease of development
 - Add keybindings for page scrolling
 - Different split types than only 2x2?
+- Use !c for ctrl-c +c for alt-c

@@ -47,7 +47,11 @@ function drawDebugDot(x, y){
         bottom_left: "j",
         bottom_right: "k",
         undo: "u",
-        left_click: "c"
+        left_click: "c",
+        page_down: "j", // + ctrl
+        page_up: "k",  // + ctrl
+        scroll_down: "j",  // + alt
+        scroll_up: "k", // + alt
     };
 
     let settings = {...default_settings};
@@ -72,10 +76,10 @@ function drawDebugDot(x, y){
         }`;
 
         directions = {
-            [settings.top_right]: [-1, 1], arrowright: [-1, 1],
-            [settings.bottom_right]: [1, 1], arrowup: [1, 1],
-            [settings.top_left]: [-1, -1], arrowleft: [-1, -1],
-            [settings.bottom_left]: [1, -1], arrowdown: [1, -1]
+            [settings.top_right]: [-1, 1],
+            [settings.bottom_right]: [1, 1],
+            [settings.top_left]: [-1, -1],
+            [settings.bottom_left]: [1, -1],
         };
     }
 
@@ -116,22 +120,35 @@ function drawDebugDot(x, y){
     document.documentElement.appendChild(style);
 
     document.addEventListener('keydown', (event) => {
+        if (!event.key || /^F\d+$/.test(event.key)) return;
+
+        const alt = event.altKey ?? false;
+        const ctrl = event.ctrlKey ?? false;
+        const normal = !(alt || ctrl);
+        const key = event.key.toLowerCase();
+
         const delta = Math.pow(1/2, size + 1) * 100;
         const is_enabled = elements_stack.length > 0;
-        const direction_scalars = directions[event.key.toLowerCase()];
+        const direction_scalars = directions[key];
 
-        if (is_enabled) event.preventDefault();
+        if (!is_enabled) {
+            if (ctrl && key === 'm') elements_stack.push(addCross(size, x_offset, y_offset)); // Start
+            return;  // Stop function if not enabled
+        }
 
-        if (event.ctrlKey && event.key.toLowerCase() === 'm' && !is_enabled) { // Start
-            elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && direction_scalars) {
+        // Everything from here happens only if it's enabled
+
+        event.preventDefault();  // Only if enabled
+        console.log("QUAD", event);
+
+        if (normal && direction_scalars) {
             const [dx, dy] = direction_scalars.map(d => d * delta);
             size += 1;
             x_offset += dx;
             y_offset += dy;
             actions_stack.push([dx, dy]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (is_enabled && event.key.toLowerCase() === settings.undo && actions_stack.length > 0) { // Go 1 layer back
+        } else if (normal && key === settings.undo && actions_stack.length > 0) { // Go 1 layer back
             let dx, dy, lx, ly;
 
             [dx, dy] = actions_stack.pop();
@@ -142,10 +159,9 @@ function drawDebugDot(x, y){
             size -= 1;
             lx.remove();
             ly.remove();
-        } else if (is_enabled && event.ctrlKey && event.key.toLowerCase() === 'c') {
+        } else if (ctrl && key === 'c') {
             reset();
-
-        } else if (is_enabled && event.key.toLowerCase() === settings.left_click) { // Click left mouse
+        } else if (normal && key === settings.left_click) { // Click left mouse
             let x = y_offset * screen_width / 100;
             let y = x_offset * screen_height / 100;
             let central_element = document.elementFromPoint(x, y);
@@ -154,6 +170,26 @@ function drawDebugDot(x, y){
             central_element?.click();
 
             reset();
+        } else if (ctrl && key === settings.page_down) {
+            window.scrollBy({
+                top: screen_height,
+                behavior: 'instant'
+            });
+        } else if (ctrl && key === settings.page_up) {
+            window.scrollBy({
+                top: -screen_height,
+                behavior: 'instant'
+            });
+        } else if ((alt && key === settings.scroll_down) || key === 'arrowdown') {
+            window.scrollBy({
+                top: 100,
+                behavior: 'instant'
+            });
+        } else if ((alt && key === settings.scroll_up) || key === 'arrowup') {
+            window.scrollBy({
+                top: -100,
+                behavior: 'instant'
+            });
         }
     }, true);
 })();
