@@ -146,7 +146,7 @@ function drawDebugDot(x, y){
             y_offset += dy;
             actions_stack.push([dx, dy]);
             elements_stack.push(addCross(size, x_offset, y_offset));
-        } else if (input === settings.undo && actions_stack.length > 0) { // Go 1 layer back
+        } else if (input === settings.undo && actions_stack.length > 0) {
             let dx, dy, lx, ly;
 
             [dx, dy] = actions_stack.pop();
@@ -159,7 +159,7 @@ function drawDebugDot(x, y){
             ly.remove();
         } else if (input === settings.deactivate_mode) {
             reset();
-        } else if (input === settings.left_click) { // Click left mouse
+        } else if (input === settings.left_click) {
             let x = y_offset * screen_width / 100;
             let y = x_offset * screen_height / 100;
             let central_element = document.elementFromPoint(x, y);

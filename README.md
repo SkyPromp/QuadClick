@@ -2,33 +2,35 @@
 A new way of mouseless navigation on websites using quadtrees
 
 <img width="1900" height="935" alt="image" src="https://github.com/user-attachments/assets/755b747a-fd58-43b7-ab83-55b84d784fef" />
+[![Watch the demo](https://img.youtube.com/vi/zjbKXGUif_o/maxresdefault.jpg)](https://www.youtube.com/watch?v=zjbKXGUif_o)
 
 ## How to use
+All keybindings are configurable, but the default keybindings are:
 - start by pressing Ctrl-M
 
 Once started:
 
-Navigate with quad trees using
-- h -> top left
-- l -> top right
-- j -> bottom left
-- k -> bottom right
-or 
-- ArrowLeft -> top left
-- ArrowRight -> top right
-- ArrowDown -> bottom left
-- ArrowUp -> bottom right
+Navigate with quadtrees using
+- H -> top left
+- L -> top right
+- J -> bottom left
+- K -> bottom right
 
-- u -> undo last navigation
+- U -> undo last navigation
+- C -> click on the element the latest crosshair is placed on
 
-- c -> click on the element the latest crosshair is placed on
+- Ctrl-J -> page down
+- Ctrl-K -> page up
+- Alt-J -> scroll down
+- Alt-K -> scroll up
 
 - Ctrl-C -> cancel
 
+Click on the icon to change the keybindings, line width and line colour
+
 ## Future plans
 - Improve css for the popup
-- Add custom keybindings for starting/cancelling
-- Clean up codebase for ease of development
-- Add keybindings for page scrolling
 - Different split types than only 2x2?
-- Use !c for ctrl-c +c for alt-c
+- Reset keybindings
+- Settings for scroll speed
+- Smooth scrolling?
