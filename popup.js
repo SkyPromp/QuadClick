@@ -31,12 +31,14 @@ const char_settings = {
     deactivate_mode: ['Deactivate mode', '!c'],
 };
 
+const toast = document.getElementById("toast");
+
 for (const [name, [title, char]] of Object.entries(char_settings)) {
     let el = document.createElement('div');
 
     el.innerHTML = `
         <label for='${name}'>${title}: </label>
-        <input type='text' id='${name}' maxlength='2' value='${char}'>
+        <input type='text' id='${name}' maxlength='3' value='${char}'>
     `;
     el.className = 'aligned_input';
 
@@ -45,6 +47,17 @@ for (const [name, [title, char]] of Object.entries(char_settings)) {
     chrome.storage.sync.get([name], (v => input.value = v[name] ?? char));
 
     el.addEventListener('change', (event) => {
+        if (!/^[!]?[+]?[a-zA-Z]$/.test(event.target.value)) {
+            toast.textContent = `Invalid key (${event.target.value})`
+            toast.classList.remove("toast");
+            void toast.offsetWidth;
+            toast.classList.add("toast");
+
+            chrome.storage.sync.get([name], (v => event.target.value = v[name] ?? char));
+
+            return;
+        }
+
         chrome.storage.sync.set({[name]: event.target.value});
     });
 

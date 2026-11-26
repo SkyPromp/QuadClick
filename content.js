@@ -190,9 +190,7 @@ function drawDebugDot(x, y){
                 top: -20,
                 behavior: 'instant'
             });
-        } else {
-            return; // So the prevent default doesn't get triggered if nothing hits
-        }
+        } else return; // So the prevent default doesn't get triggered if nothing hits
 
         event.preventDefault(); // Only if enabled and something gets triggered
 

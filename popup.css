@@ -8,7 +8,7 @@ h2, h3 {
 }
 
 input[type="text"] {
-    width: 2ch;
+    width: 3ch;
 }
 
 input[type="color"] {
@@ -24,3 +24,16 @@ label {
     display: flex;
     align-items: center;
 }
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.toast {
+    color: red;
+    font-weight: bold;
+    opacity: 1;
+    animation: fadeOut 10s linear forwards;
+}
+
