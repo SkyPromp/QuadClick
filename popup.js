@@ -47,7 +47,7 @@ for (const [name, [title, char]] of Object.entries(char_settings)) {
     chrome.storage.sync.get([name], (v => input.value = v[name] ?? char));
 
     el.addEventListener('change', (event) => {
-        if (!/^[!]?[+]?[a-zA-Z1-0.^@#$%&(){}[]-_=\/\ <>,;:]$/.test(event.target.value)) {
+        if (!/^[!]?[+]?[^!+]$/.test(event.target.value)) {
             toast.textContent = `Invalid key (${event.target.value})`
             toast.classList.remove("toast");
             void toast.offsetWidth;

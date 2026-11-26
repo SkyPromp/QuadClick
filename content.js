@@ -124,7 +124,9 @@ function drawDebugDot(x, y){
     document.addEventListener('keydown', (event) => {
         if (!event.key || /^F\d+$/.test(event.key)) return;
 
-        const input = `${event.ctrlKey ? '!': ''}${event.altKey ? '+' : ''}${event.key.toLowerCase()}`
+        const input = `${event.ctrlKey ? '!': ''}${event.altKey || event.getModifierState('AltGraph') ? '+' : ''}${event.key.toLowerCase()}`
+
+        console.log("QUAD", input, event);
 
         const delta = Math.pow(1/2, size + 1) * 100;
         const is_enabled = elements_stack.length > 0;
