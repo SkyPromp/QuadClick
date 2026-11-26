@@ -1,5 +1,7 @@
 # QuadClick
-A new way of mouseless navigation on websites using quadtrees
+A new way of mouseless navigation on websites using quadtrees!
+
+Available on the Chrome Web Store [here](https://chromewebstore.google.com/detail/quadclick/mcpdbmkecgnghdcjkmieggkeponjhfpf)
 
 <img width="1900" height="935" alt="image" src="https://github.com/user-attachments/assets/755b747a-fd58-43b7-ab83-55b84d784fef" />
 
