@@ -5,6 +5,8 @@ Available on the Chrome Web Store [here](https://chromewebstore.google.com/detai
 
 <img width="1900" height="935" alt="image" src="https://github.com/user-attachments/assets/755b747a-fd58-43b7-ab83-55b84d784fef" />
 
+This extension is meant to a be a powertool for people who want to maximize productivity and get every last percent out of their workflows. This tool is handcrafted and will be extended in the future to allow for more possibilities and customizability. For any bugs or suggestions, please contact me on my Discord: @skypromp, add a message with some context. My next goals with this project is to reduce the average/maximum number of keypresses needed to reach any pixel on the screen. Currently on 1920x1080 the maximum required motions to reach any pixel is 11, although the average is closer to 9. Luckily most buttons on the internet are bigger than 1 pixel and thus will the average number of motions be significantly reduced. Realistically the average number of motions should be between 3.5-5 for most users on 1920x1080 monitors. For bigger resolutions this isn't much different luckily. I will provide better numbers in the future. My goal is to have a reproduceable set of motions so users can have them in their muscle memory and do not rely on visual queues as in other solutions. I want to provide a wide set of tools so users can go as far as they want with these motions. Currently I only support vertical scrolling, jumping and the quadtree navigation and undo/cancel actions.
+
 ## Demo
 [![Watch the demo](https://img.youtube.com/vi/zjbKXGUif_o/0.jpg)](https://www.youtube.com/watch?v=zjbKXGUif_o)
 
@@ -33,6 +35,17 @@ Navigate with quadtrees using
 - Ctrl-C -> cancel
 
 Click on the icon to change the keybindings, line width and line colour
+
+## How to install
+Either via the Chrome Web Store [here](https://chromewebstore.google.com/detail/quadclick/mcpdbmkecgnghdcjkmieggkeponjhfpf). 
+
+Or install it manually:
+1) git clone git@github.com:SkyPromp/QuadClick.git
+2) cd QuadClick
+3) zip -r QuadClick.zip popup.* icons content.js manifest.json
+4) Go to chrome:extensions in the browser
+5) Enable developer settings
+6) Click Load unpacked and select the zip file
 
 ## Future plans
 - Improve css for the popup
